@@ -1,6 +1,5 @@
 package com.example.simpleregistrationapp
 
-import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +25,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
     private val binding by viewBinding(FragmentRegistrationBinding::bind)
     private val viewModel: RegistrationViewModel by fragmentViewModel()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.registrationInputName.onTextChanged {
@@ -34,8 +34,8 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
         binding.registrationInputEmail.onTextChanged {
             viewModel.updateEmail(it)
         }
-        binding.registrationInputDate.setOnClickListener{
-
+        binding.registrationInputDate.setOnDatePickedListener {
+            viewModel.updateDate(it)
         }
     }
 
@@ -44,6 +44,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
             with(binding) {
                 registrationInputName.updateTextIfDifferent(state.name)
                 registrationInputEmail.updateTextIfDifferent(state.email)
+                registrationInputDate.updateTextIfDifferent(state.formattedDateOfBirth)
             }
         }
     }

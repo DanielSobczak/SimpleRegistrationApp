@@ -63,7 +63,7 @@
         android:hint="Date of Birth"
         app:layout_constraintTop_toBottomOf="@id/registration_input_email_container">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.example.simpleregistrationapp.feature.utils.RegistrationDatePicker
             android:id="@+id/registration_input_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -6,5 +6,6 @@ import java.util.*
 data class RegistrationState(
     val name: String = "",
     val email: String = "",
-    val dateOfBirth: Date? = null
+    val dateOfBirth: Date? = null,
+    val formattedDateOfBirth: String = ""
 ) : MavericksState
