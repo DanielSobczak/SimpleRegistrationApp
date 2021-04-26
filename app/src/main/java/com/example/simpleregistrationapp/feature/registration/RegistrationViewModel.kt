@@ -6,4 +6,5 @@ class RegistrationViewModel(initialState: RegistrationState) :
     MavericksViewModel<RegistrationState>(initialState) {
 
     fun updateName(name: String) = setState { copy(name = name) }
+    fun updateEmail(email: String) = setState { copy(name = email) }
 }

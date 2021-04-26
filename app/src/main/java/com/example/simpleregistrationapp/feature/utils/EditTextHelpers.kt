@@ -6,10 +6,16 @@ import android.widget.EditText
 
 typealias StringCallback = (text: String) -> Unit
 
-fun EditText.onChange(callback: StringCallback) {
-    this.addTextChangedListener(AfterTextChangedWatcher(callback))
+fun EditText.updateTextIfDifferent(newText: CharSequence?) {
+    if (!newText.toString().contentEquals(this.text)) {
+        setText(newText)
+        setSelection(newText?.length ?: 0)
+    }
 }
 
+fun EditText.onTextChanged(callback: StringCallback) {
+    this.addTextChangedListener(AfterTextChangedWatcher(callback))
+}
 
 private class AfterTextChangedWatcher(private val callback: StringCallback) : TextWatcher {
     override fun afterTextChanged(s: Editable?) {

@@ -1,5 +1,6 @@
 package com.example.simpleregistrationapp
 
+import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +10,10 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.example.simpleregistrationapp.databinding.FragmentRegistrationBinding
 import com.example.simpleregistrationapp.feature.registration.RegistrationViewModel
-import com.example.simpleregistrationapp.feature.utils.onChange
+import com.example.simpleregistrationapp.feature.utils.onTextChanged
+import com.example.simpleregistrationapp.feature.utils.updateTextIfDifferent
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,14 +28,23 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.registrationInputName.onChange {
+        binding.registrationInputName.onTextChanged {
             viewModel.updateName(it)
+        }
+        binding.registrationInputEmail.onTextChanged {
+            viewModel.updateEmail(it)
+        }
+        binding.registrationInputDate.setOnClickListener{
+
         }
     }
 
     override fun invalidate() {
         withState(viewModel) { state ->
-            binding.registrationInputDate.setText(state.name)
+            with(binding) {
+                registrationInputName.updateTextIfDifferent(state.name)
+                registrationInputEmail.updateTextIfDifferent(state.email)
+            }
         }
     }
 
