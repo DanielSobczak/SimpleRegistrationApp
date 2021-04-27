@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragment_registration"
-        android:name="com.example.simpleregistrationapp.RegistrationFragment">
+        android:name="com.example.simpleregistrationapp.feature.registration.RegistrationFragment">
 
     </fragment>
 
