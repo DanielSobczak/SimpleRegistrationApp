@@ -4,8 +4,9 @@ import com.airbnb.mvrx.MavericksState
 import java.util.*
 
 data class RegistrationState(
+    val formattedDateOfBirth: String = "",
     val name: String = "",
     val email: String = "",
     val dateOfBirth: Date? = null,
-    val formattedDateOfBirth: String = ""
+    val formErrors: List<ValidationResponse.ValidationError> = emptyList(),
 ) : MavericksState
