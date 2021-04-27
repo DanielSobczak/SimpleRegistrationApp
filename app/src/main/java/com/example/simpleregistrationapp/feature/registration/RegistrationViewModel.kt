@@ -2,6 +2,9 @@ package com.example.simpleregistrationapp.feature.registration
 
 import com.airbnb.mvrx.MavericksViewModel
 import com.example.simpleregistrationapp.feature.registration.ValidationResponse.ValidationError
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -11,6 +14,8 @@ class RegistrationViewModel(initialState: RegistrationState) :
 
     private val formatter = SimpleDateFormat("dd-MM-yyyy")
     private val userValidator = UserValidator()
+    private val sideEffectsFlow = MutableSharedFlow<RegistrationSideEffects>()
+    val sideEffectsFlowReceiver = sideEffectsFlow.asSharedFlow()
 
     fun updateName(name: String) = setState { copy(name = name) }
     fun updateEmail(email: String) = setState { copy(email = email) }
@@ -36,7 +41,9 @@ class RegistrationViewModel(initialState: RegistrationState) :
     }
 
     private fun navigateToConfirmationScreen() {
-        TODO("implement navigation")
+        viewModelScope.launch {
+            sideEffectsFlow.emit(RegistrationSideEffects.OpenConfirmationScreen)
+        }
     }
 }
 
