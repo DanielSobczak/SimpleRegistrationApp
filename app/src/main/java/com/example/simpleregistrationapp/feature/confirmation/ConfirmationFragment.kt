@@ -19,9 +19,13 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation), Mavericks
             when (state.loadingState) {
                 LoadingState.Loading -> renderLoading()
                 LoadingState.Ready -> renderReadyState(state)
-                LoadingState.Error -> TODO()
+                LoadingState.Error -> renderErrorState()
             }
         }
+    }
+
+    private fun renderErrorState() {
+
     }
 
     private fun renderLoading() {

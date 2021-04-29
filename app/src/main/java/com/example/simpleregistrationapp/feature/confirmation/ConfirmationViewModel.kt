@@ -1,6 +1,7 @@
-package com.example.simpleregistrationapp.feature.confirmation
+ package com.example.simpleregistrationapp.feature.confirmation
 
 import com.airbnb.mvrx.MavericksViewModel
+import com.example.simpleregistrationapp.domain.user.User
 import com.example.simpleregistrationapp.feature.utils.LoadingState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -58,10 +59,4 @@ sealed class FetchUserResult {
     data class Success(val user: User) : FetchUserResult()
     data class Fail(val exception: Exception) : FetchUserResult()
 }
-
-data class User(
-    val name: String,
-    val email: String,
-    val dateOfBirth: Date,
-)
 
