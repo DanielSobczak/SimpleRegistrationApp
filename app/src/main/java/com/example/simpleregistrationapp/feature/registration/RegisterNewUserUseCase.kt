@@ -2,7 +2,7 @@ package com.example.simpleregistrationapp.feature.registration
 
 import com.example.simpleregistrationapp.domain.user.User
 import com.example.simpleregistrationapp.domain.user.UserStorage
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -20,7 +20,8 @@ interface RegisterNewUserUseCase {
 }
 
 class RegisterNewUserUseCaseImpl @Inject constructor(
-    private val userStorage: UserStorage
+    private val userStorage: UserStorage,
+    private val coroutineDispatcher: CoroutineDispatcher
 ) : RegisterNewUserUseCase {
 
     override fun registerNewUser(user: User): Flow<RegistrationResult> = flow {
@@ -31,6 +32,6 @@ class RegisterNewUserUseCaseImpl @Inject constructor(
         } catch (exception: Exception) {
             emit(RegistrationResult.UnhandledError(exception))
         }
-    }.flowOn(Dispatchers.Default)
+    }.flowOn(coroutineDispatcher)
 
 }
