@@ -1,6 +1,7 @@
 package com.example.simpleregistrationapp.feature.registration
 
 import com.airbnb.mvrx.MavericksState
+import com.example.simpleregistrationapp.domain.user.User
 import java.util.*
 
 data class RegistrationState(
@@ -9,4 +10,14 @@ data class RegistrationState(
     val email: String = "",
     val dateOfBirth: Date? = null,
     val formErrors: List<ValidationResponse.ValidationError> = emptyList(),
-) : MavericksState
+) : MavericksState {
+
+    fun mapToUser(): User = User(
+        name,
+        email,
+        dateOfBirth!!
+    )
+
+}
+
+

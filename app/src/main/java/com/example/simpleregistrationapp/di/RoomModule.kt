@@ -23,11 +23,9 @@ class RoomModule {
         ).build()
     }
 
-
     @Provides
     fun provideUserDao(roomDatabase: RoomDatabase): UserEntityDao {
         return roomDatabase.userDao()
     }
-
 }
 
