@@ -1,15 +1,28 @@
 package com.example.simpleregistrationapp.feature.registration
 
 import com.airbnb.mvrx.MavericksViewModel
+import com.airbnb.mvrx.MavericksViewModelFactory
+import com.example.simpleregistrationapp.di.mavericks.AssistedViewModelFactory
+import com.example.simpleregistrationapp.di.mavericks.hiltMavericksViewModelFactory
+import com.example.simpleregistrationapp.domain.user.User
 import com.example.simpleregistrationapp.feature.registration.ValidationResponse.ValidationError
+import com.example.simpleregistrationapp.storage.user.RoomUserStorage
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RegistrationViewModel(initialState: RegistrationState) :
+class RegistrationViewModel @AssistedInject constructor(
+    @Assisted initialState: RegistrationState,
+    private val roomUserStorage: RoomUserStorage
+) :
     MavericksViewModel<RegistrationState>(initialState) {
 
     private val formatter = SimpleDateFormat("dd-MM-yyyy")
@@ -41,10 +54,23 @@ class RegistrationViewModel(initialState: RegistrationState) :
     }
 
     private fun navigateToConfirmationScreen() {
-        viewModelScope.launch {
-            sideEffectsFlow.emit(RegistrationSideEffects.OpenConfirmationScreen)
+        withState {
+            viewModelScope.launch {
+                withContext(Dispatchers.Default) {
+                    roomUserStorage.insert(User(it.name, it.email, it.dateOfBirth!!))
+                }
+                sideEffectsFlow.emit(RegistrationSideEffects.OpenConfirmationScreen)
+            }
         }
     }
+
+    @AssistedFactory
+    interface Factory : AssistedViewModelFactory<RegistrationViewModel, RegistrationState> {
+        override fun create(state: RegistrationState): RegistrationViewModel
+    }
+
+    companion object :
+        MavericksViewModelFactory<RegistrationViewModel, RegistrationState> by hiltMavericksViewModelFactory()
 }
 
 private fun RegistrationState.toRequest() = RegistrationRequest(

@@ -2,11 +2,11 @@ package com.example.simpleregistrationapp.storage.user
 
 import com.example.simpleregistrationapp.domain.user.User
 import com.example.simpleregistrationapp.domain.user.UserStorage
-import com.example.simpleregistrationapp.storage.RoomDatabase
+import javax.inject.Inject
 
-class RoomUserStorage(roomDatabase: RoomDatabase) : UserStorage {
-
-    private val userDao = roomDatabase.userDao()
+class RoomUserStorage @Inject constructor(
+    private val userDao: UserEntityDao
+) : UserStorage {
 
     override fun insert(user: User) {
         userDao.insert(user.toEntity())
