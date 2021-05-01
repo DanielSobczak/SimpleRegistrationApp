@@ -5,7 +5,7 @@ import com.example.simpleregistrationapp.domain.user.UserStorage
 import javax.inject.Inject
 
 class RoomUserStorage @Inject constructor(
-    private val userDao: UserEntityDao
+    private val userDao: UserEntityDao,
 ) : UserStorage {
 
     override fun insert(user: User) {
@@ -19,4 +19,6 @@ class RoomUserStorage @Inject constructor(
     override fun deleteAll() {
         userDao.deleteAll()
     }
+
+
 }

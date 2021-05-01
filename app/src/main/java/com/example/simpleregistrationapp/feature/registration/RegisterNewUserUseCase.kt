@@ -2,8 +2,10 @@ package com.example.simpleregistrationapp.feature.registration
 
 import com.example.simpleregistrationapp.domain.user.User
 import com.example.simpleregistrationapp.domain.user.UserStorage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 sealed class RegistrationResult {
@@ -29,6 +31,6 @@ class RegisterNewUserUseCaseImpl @Inject constructor(
         } catch (exception: Exception) {
             emit(RegistrationResult.UnhandledError(exception))
         }
-    }
+    }.flowOn(Dispatchers.Default)
 
 }

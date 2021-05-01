@@ -8,7 +8,6 @@ import com.example.simpleregistrationapp.feature.registration.ValidationResponse
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
@@ -53,7 +52,7 @@ class RegistrationViewModel @AssistedInject constructor(
 
     private fun registerUser() {
         withState {
-            viewModelScope.launch(Dispatchers.Default) {
+            viewModelScope.launch {
                 registerNewUserUseCase.registerNewUser(it.mapToUser()).collect {
                     when (it) {
                         RegistrationResult.Loading -> {
