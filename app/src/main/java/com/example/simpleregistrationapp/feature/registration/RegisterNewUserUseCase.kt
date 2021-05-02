@@ -30,7 +30,7 @@ class RegisterNewUserUseCaseImpl @Inject constructor(
     private val coroutineDispatcher: CoroutineDispatcher
 ) : RegisterNewUserUseCase {
 
-    override fun registerNewUser(user: User): Flow<RegistrationResult> = flow {
+    override fun registerNewUser(user: User): Flow<RegistrationResult> = flow<RegistrationResult> {
         emit(RegistrationResult.Loading)
         val validationResult = userValidator.validate(
             request = RegistrationRequest(

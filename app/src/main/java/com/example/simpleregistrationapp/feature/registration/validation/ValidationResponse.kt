@@ -5,10 +5,10 @@ sealed class ValidationResponse {
     data class ValidationFailed(
         val nameError: ValidationError? = null,
         val emailError: ValidationError? = null,
-        val dateOfBirthError: ValidationError? = null,
+        val dateOfBirthError: ValidationError? = null
     ) : ValidationResponse()
 
-    sealed class ValidationError() {
+    sealed class ValidationError {
         object EmptyField : ValidationError()
         object InvalidFormat : ValidationError()
     }

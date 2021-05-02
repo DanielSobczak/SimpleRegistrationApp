@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.simpleregistrationapp.domain.user.User
 import org.threeten.bp.LocalDate
-import java.util.*
 
 @Entity
 data class UserEntity(

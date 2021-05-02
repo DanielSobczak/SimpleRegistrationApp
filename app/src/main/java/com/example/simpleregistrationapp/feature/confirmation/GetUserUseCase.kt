@@ -3,7 +3,6 @@ package com.example.simpleregistrationapp.feature.confirmation
 import com.example.simpleregistrationapp.domain.user.User
 import com.example.simpleregistrationapp.domain.user.UserStorage
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
