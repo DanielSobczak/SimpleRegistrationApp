@@ -33,9 +33,10 @@ class EmailInputValidatorTest {
     }
 
     @Test
-    fun givenEmailAddressWithoutDomainReturnsError() {
+    fun givenEmailAddressWithIncorrectDomainReturnsError() {
         assertIsNotValidFormat("foo@bar")
         assertIsNotValidFormat("foo@.com")
+        assertIsNotValidFormat("foo@b.a")
     }
 
     @ParameterizedTest(name = "[{index}] given {0} should be valid")
