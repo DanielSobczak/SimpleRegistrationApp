@@ -9,7 +9,7 @@ data class RegistrationState(
     val name: String = "",
     val email: String = "",
     val dateOfBirth: Date? = null,
-    val formErrors: List<ValidationResponse.ValidationError> = emptyList(),
+   // val formErrors: List<ValidationResponse.ValidationError> = emptyList(),
 ) : MavericksState {
 
     fun mapToUser(): User = User(

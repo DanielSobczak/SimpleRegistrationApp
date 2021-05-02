@@ -3,7 +3,6 @@ package com.example.simpleregistrationapp.storage.user
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.simpleregistrationapp.domain.user.User
-import com.example.simpleregistrationapp.feature.registration.ValidationResponse
 import java.util.*
 
 @Entity

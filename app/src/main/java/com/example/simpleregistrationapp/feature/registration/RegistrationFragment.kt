@@ -51,7 +51,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
                 registrationInputEmail.updateTextIfDifferent(state.email)
                 registrationInputDate.updateTextIfDifferent(state.formattedDateOfBirth)
 
-                registrationInputEmailContainer.apply {
+                /*registrationInputEmailContainer.apply {
                     if (state.formErrors.any { it is ValidationResponse.ValidationError.IncorrectEmailFormat }) {
                         error = "Incorrect Email Format"
                     }
@@ -80,7 +80,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
 
                 if (!state.formErrors.any { it is ValidationResponse.ValidationError.MissingName }) {
                     registrationInputNameContainer.error = null
-                }
+                }*/
             }
         }
     }

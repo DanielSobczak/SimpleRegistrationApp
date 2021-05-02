@@ -11,8 +11,8 @@ import javax.inject.Inject
 sealed class RegistrationResult {
     object Loading : RegistrationResult()
     object Success : RegistrationResult()
+    data class InvalidFields(val s: String) : RegistrationResult()
     data class UnhandledError(val exception: Exception) : RegistrationResult()
-
 }
 
 interface RegisterNewUserUseCase {

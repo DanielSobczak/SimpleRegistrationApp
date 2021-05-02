@@ -21,15 +21,15 @@ class ConfirmationViewModel @AssistedInject constructor(
         viewModelScope.launch {
             getUserUseCase.getRegisteredUser().collect { result ->
                 when (result) {
-                    is FetchUserResult.UnhandledError -> setState { copy(loadingState = LoadingState.Error) }
                     FetchUserResult.Loading -> setState { copy(loadingState = LoadingState.Loading) }
-                    FetchUserResult.NoUserFound -> setState { copy(loadingState = LoadingState.Error) }
                     is FetchUserResult.Success -> setState {
                         copy(
                             loadingState = LoadingState.Ready,
                             user = result.user
                         )
                     }
+                    FetchUserResult.NoUserFound -> setState { copy(loadingState = LoadingState.Error) }
+                    is FetchUserResult.UnhandledError -> setState { copy(loadingState = LoadingState.Error) }
                 }
             }
         }
