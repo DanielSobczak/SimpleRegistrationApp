@@ -45,6 +45,13 @@
         app:layout_constraintTop_toBottomOf="@id/guidelineTop">
 
         <TextView
+            style="@style/confirmation_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/confirmation_header" />
+
+        <TextView
             style="@style/confirmation_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
