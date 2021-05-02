@@ -21,3 +21,11 @@ and default lint configuration
 
 ## Overview
 App is written in MVI architecture based on a [mavericks library](https://github.com/airbnb/mavericks).
+
+## TODO list
+* improve loading/error feedback on UI
+* handle back navigation from Confirmation screen
+* extract versions & clean up gradle dependencies
+* add proper formatting rules
+* go through lint warning
+
