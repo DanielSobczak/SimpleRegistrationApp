@@ -9,13 +9,15 @@
 
 This sample project contains Unit Tests that can be invoked from command
 line with:
- >./gradlew test
+>./gradlew test
+
 as well as UI test written with the help of [kakao](https://github.com/agoda-com/Kakao)
- >./gradlew connectedAndroidTest
+>./gradlew connectedAndroidTest
 
 ## Static code analysis
 For static code analysis run [detekt] (https://github.com/detekt/detekt)
 >./gradlew detekt
+
 and default lint configuration
 >./gradlew lint
 
