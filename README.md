@@ -13,5 +13,11 @@ line with:
 as well as UI test written with the help of [kakao](https://github.com/agoda-com/Kakao)
  >./gradlew connectedAndroidTest
 
+## Static code analysis
+For static code analysis run [detekt] (https://github.com/detekt/detekt)
+>./gradlew detekt
+and default lint configuration
+>./gradlew lint
+
 ## Overview
 App is written in MVI architecture based on a [mavericks library](https://github.com/airbnb/mavericks).
