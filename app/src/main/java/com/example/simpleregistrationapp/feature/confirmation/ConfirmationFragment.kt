@@ -28,19 +28,26 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation), Mavericks
     }
 
     private fun renderErrorState() {
-
+        with(binding) {
+            confirmationLoader.visibility = View.GONE
+            confirmationContent.visibility = View.GONE
+            confirmationError.visibility = View.VISIBLE
+            confirmationError.text = getString(R.string.confirmation_generic_error)
+        }
     }
 
     private fun renderLoading() {
         with(binding) {
             confirmationLoader.visibility = View.VISIBLE
             confirmationContent.visibility = View.GONE
+            confirmationError.visibility = View.GONE
         }
     }
 
     private fun renderReadyState(state: ConfirmationState) {
         with(binding) {
             confirmationLoader.visibility = View.GONE
+            confirmationError.visibility = View.GONE
             confirmationContent.visibility = View.VISIBLE
             confirmationUserName.text = state.user?.name
             confirmationUserMail.text = state.user?.email

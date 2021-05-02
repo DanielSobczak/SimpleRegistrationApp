@@ -7,4 +7,5 @@
     <string name="registration_hint_email">Email</string>
     <string name="registration_hint_date_of_birth">Date of Birth</string>
     <string name="registration_btn_register">Register</string>
+    <string name="confirmation_generic_error">Something wrong happened please try again</string>
 </resources>
