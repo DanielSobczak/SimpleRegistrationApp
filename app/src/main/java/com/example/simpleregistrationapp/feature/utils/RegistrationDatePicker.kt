@@ -11,7 +11,8 @@ class RegistrationDatePicker : TextInputEditText {
     private var registrationSelectedListener: ((LocalDate) -> Unit)? = null
     private var dialogDateSetListener: DatePickerDialog.OnDateSetListener =
         DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            val date = LocalDate.of(year, monthOfYear, dayOfMonth)
+            val normalizedMonth = monthOfYear + 1 //DatePicker dialogs starts counting months from 0
+            val date = LocalDate.of(year, normalizedMonth, dayOfMonth)
             registrationSelectedListener?.invoke(date)
         }
 

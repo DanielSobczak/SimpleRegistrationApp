@@ -9,10 +9,12 @@ import com.example.simpleregistrationapp.R
 import com.example.simpleregistrationapp.databinding.FragmentConfirmationBinding
 import com.example.simpleregistrationapp.feature.utils.LoadingState
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
+import org.threeten.bp.format.DateTimeFormatter
 
 class ConfirmationFragment : Fragment(R.layout.fragment_confirmation), MavericksView {
     private val binding by viewBinding(FragmentConfirmationBinding::bind)
     private val viewModel: ConfirmationViewModel by fragmentViewModel()
+    private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     override fun invalidate() {
         withState(viewModel) { state ->
@@ -41,7 +43,7 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation), Mavericks
             confirmationContent.visibility = View.VISIBLE
             confirmationUserName.text = state.user?.name
             confirmationUserMail.text = state.user?.email
-            confirmationUserDateOfBirth.text = state.user?.dateOfBirth.toString()
+            confirmationUserDateOfBirth.text = state.user?.dateOfBirth?.format(dateFormatter)
         }
     }
 
