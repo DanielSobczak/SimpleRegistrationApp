@@ -8,8 +8,8 @@ sealed class ValidationResponse {
         val dateOfBirthError: ValidationError? = null,
     ) : ValidationResponse()
 
-    sealed class ValidationError(open val shouldFocus: Boolean) {
-        data class EmptyField(override val shouldFocus: Boolean) : ValidationError(shouldFocus)
-        data class InvalidFormat(override val shouldFocus: Boolean) : ValidationError(shouldFocus)
+    sealed class ValidationError() {
+        object EmptyField : ValidationError()
+        object InvalidFormat : ValidationError()
     }
 }

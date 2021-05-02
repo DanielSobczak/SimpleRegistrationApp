@@ -1,6 +1,7 @@
 package com.example.simpleregistrationapp.feature.registration
 
 import com.example.simpleregistrationapp.domain.user.UserStorage
+import com.example.simpleregistrationapp.feature.registration.validation.UserValidator
 import com.example.simpleregistrationapp.feature.utils.dummyUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
@@ -22,6 +23,7 @@ class RegisterNewUserUseCaseImplTest {
     fun init() {
         sut = RegisterNewUserUseCaseImpl(
             mockUserStorage,
+            UserValidator(),
             testDispatcher
         )
     }

@@ -1,8 +1,7 @@
 package com.example.simpleregistrationapp.feature.registration.validation
 
 import com.example.simpleregistrationapp.feature.registration.RegistrationRequest
-import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse.ValidationError
-import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse.ValidationFailed
+import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.*
@@ -22,9 +21,9 @@ class UserValidatorTest {
         val result = sut.validate(emptyRequest)
         assertThat(result).isEqualTo(
             ValidationFailed(
-                nameError = ValidationError.EmptyField(true),
-                emailError = ValidationError.EmptyField(false),
-                dateOfBirthError = ValidationError.EmptyField(false)
+                nameError = ValidationError.EmptyField,
+                emailError = ValidationError.EmptyField,
+                dateOfBirthError = ValidationError.EmptyField
             )
         )
     }
@@ -34,7 +33,7 @@ class UserValidatorTest {
         val sut = UserValidator()
         val result = sut.validate(correctRequest)
         assertThat(result).isEqualTo(
-            ValidationResponse.PassedValidation
+            PassedValidation
         )
     }
 
@@ -44,7 +43,7 @@ class UserValidatorTest {
         val result = sut.validate(correctRequest.copy(name = ""))
         assertThat(result).isEqualTo(
             ValidationFailed(
-                nameError = ValidationError.EmptyField(true),
+                nameError = ValidationError.EmptyField,
                 emailError = null,
                 dateOfBirthError = null
             )
@@ -57,7 +56,7 @@ class UserValidatorTest {
         val result = sut.validate(correctRequest.copy(name = "a"))
         assertThat(result).isEqualTo(
             ValidationFailed(
-                nameError = ValidationError.InvalidFormat(true),
+                nameError = ValidationError.InvalidFormat,
                 emailError = null,
                 dateOfBirthError = null
             )
@@ -71,7 +70,7 @@ class UserValidatorTest {
         assertThat(result).isEqualTo(
             ValidationFailed(
                 nameError = null,
-                emailError = ValidationError.EmptyField(true),
+                emailError = ValidationError.EmptyField,
                 dateOfBirthError = null
             )
         )
@@ -84,7 +83,7 @@ class UserValidatorTest {
         assertThat(result).isEqualTo(
             ValidationFailed(
                 nameError = null,
-                emailError = ValidationError.InvalidFormat(true),
+                emailError = ValidationError.InvalidFormat,
                 dateOfBirthError = null
             )
         )
@@ -98,7 +97,7 @@ class UserValidatorTest {
             ValidationFailed(
                 nameError = null,
                 emailError = null,
-                dateOfBirthError = ValidationError.EmptyField(true)
+                dateOfBirthError = ValidationError.EmptyField
             )
         )
     }

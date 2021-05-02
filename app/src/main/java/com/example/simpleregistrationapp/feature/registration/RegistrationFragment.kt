@@ -48,39 +48,11 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
         withState(viewModel) { state ->
             with(binding) {
                 registrationInputName.updateTextIfDifferent(state.name)
+                registrationInputNameContainer.error = state.nameError
                 registrationInputEmail.updateTextIfDifferent(state.email)
+                registrationInputEmailContainer.error = state.emailError
                 registrationInputDate.updateTextIfDifferent(state.formattedDateOfBirth)
-
-                /*registrationInputEmailContainer.apply {
-                    if (state.formErrors.any { it is ValidationResponse.ValidationError.IncorrectEmailFormat }) {
-                        error = "Incorrect Email Format"
-                    }
-                }
-
-                state.formErrors.forEach {
-                    when (it) {
-                        is ValidationResponse.ValidationError.IncorrectEmailFormat -> registrationInputEmailContainer.error =
-                            "Incorrect Email Format"
-                        is ValidationResponse.ValidationError.MissingDateOfBirth -> registrationInputDateContainer.error =
-                            "Missing date of birth"
-                        is ValidationResponse.ValidationError.MissingEmail -> registrationInputEmailContainer.error =
-                            "Missing email"
-                        is ValidationResponse.ValidationError.MissingName -> registrationInputNameContainer.error =
-                            "Missing name"
-                    }
-                }
-
-                if (!state.formErrors.any { it is ValidationResponse.ValidationError.IncorrectEmailFormat || it is ValidationResponse.ValidationError.MissingEmail }) {
-                    registrationInputEmailContainer.error = null
-                }
-
-                if (!state.formErrors.any { it is ValidationResponse.ValidationError.MissingDateOfBirth }) {
-                    registrationInputDateContainer.error = null
-                }
-
-                if (!state.formErrors.any { it is ValidationResponse.ValidationError.MissingName }) {
-                    registrationInputNameContainer.error = null
-                }*/
+                registrationInputDateContainer.error = state.dateOfBirthError
             }
         }
     }

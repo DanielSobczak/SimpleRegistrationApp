@@ -4,6 +4,8 @@ import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.example.simpleregistrationapp.di.mavericks.AssistedViewModelFactory
 import com.example.simpleregistrationapp.di.mavericks.hiltMavericksViewModelFactory
+import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse
+import com.example.simpleregistrationapp.feature.utils.LoadingState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -24,39 +26,57 @@ class RegistrationViewModel @AssistedInject constructor(
     private val sideEffectsFlow = MutableSharedFlow<RegistrationSideEffects>()
     val sideEffectsFlowReceiver = sideEffectsFlow.asSharedFlow()
 
-    fun updateName(name: String) = setState { copy(name = name) }
-    fun updateEmail(email: String) = setState { copy(email = email) }
+    fun updateName(name: String) = setState { copy(name = name, nameError = null) }
+    fun updateEmail(email: String) = setState { copy(email = email, emailError = null) }
     fun updateDate(date: Date) =
         setState {
             copy(
                 dateOfBirth = date,
+                dateOfBirthError = null,
                 formattedDateOfBirth = formatter.format(date),
             )
         }
 
     fun onRegisterClicked() {
-        withState { state ->
-            registerUser()
-        }
+        registerUser()
     }
 
     private fun registerUser() {
         withState {
             viewModelScope.launch {
                 registerNewUserUseCase.registerNewUser(it.mapToUser()).collect {
-                    when (it) {
-                        RegistrationResult.Loading -> {
-                        }
-                        RegistrationResult.Success -> {
-                            navigateToConfirmationScreen()
-                        }
-                        is RegistrationResult.UnhandledError -> {
-                        }
-                    }
+                    reduceRegistrationResult(it)
                 }
             }
         }
     }
+
+    private fun reduceRegistrationResult(registrationResult: RegistrationResult) {
+        when (registrationResult) {
+            RegistrationResult.Loading -> setState {
+                copy(loadingState = LoadingState.Loading)
+            }
+            RegistrationResult.Success -> {
+                setState { copy(loadingState = LoadingState.Ready) }
+                navigateToConfirmationScreen()
+            }
+            is RegistrationResult.UnhandledError -> setState {
+                copy(loadingState = LoadingState.Error)
+            }
+            is RegistrationResult.InvalidFields -> setState {
+                stateForValidationError(registrationResult.validationError)
+            }
+        }
+    }
+
+    private fun RegistrationState.stateForValidationError(
+        validationError: ValidationResponse.ValidationFailed
+    ): RegistrationState = copy(
+        nameError = validationError.nameError?.asNameError(),
+        emailError = validationError.emailError?.asEmailError(),
+        dateOfBirthError = validationError.dateOfBirthError?.asDateError(),
+        loadingState = LoadingState.Error
+    )
 
     private fun navigateToConfirmationScreen() {
         viewModelScope.launch {
@@ -73,10 +93,25 @@ class RegistrationViewModel @AssistedInject constructor(
         MavericksViewModelFactory<RegistrationViewModel, RegistrationState> by hiltMavericksViewModelFactory()
 }
 
-private fun RegistrationState.toRequest() = RegistrationRequest(
-    this.name,
-    this.email,
-    this.dateOfBirth
-)
+private fun ValidationResponse.ValidationError.asNameError(): String {
+    return when (this) {
+        ValidationResponse.ValidationError.EmptyField -> "Missing username"
+        ValidationResponse.ValidationError.InvalidFormat -> "Username format invalid"
+    }
+}
+
+private fun ValidationResponse.ValidationError.asEmailError(): String {
+    return when (this) {
+        ValidationResponse.ValidationError.EmptyField -> "Missing email"
+        ValidationResponse.ValidationError.InvalidFormat -> "Email format invalid"
+    }
+}
+
+private fun ValidationResponse.ValidationError.asDateError(): String {
+    return when (this) {
+        ValidationResponse.ValidationError.EmptyField -> "Missing date of birth"
+        ValidationResponse.ValidationError.InvalidFormat -> "Date format is not valid"
+    }
+}
 
 
