@@ -8,13 +8,14 @@ import com.airbnb.mvrx.withState
 import com.example.simpleregistrationapp.R
 import com.example.simpleregistrationapp.databinding.FragmentConfirmationBinding
 import com.example.simpleregistrationapp.feature.utils.LoadingState
+import com.example.simpleregistrationapp.utils.LOCAL_DATE_FORMAT
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import org.threeten.bp.format.DateTimeFormatter
 
 class ConfirmationFragment : Fragment(R.layout.fragment_confirmation), MavericksView {
     private val binding by viewBinding(FragmentConfirmationBinding::bind)
     private val viewModel: ConfirmationViewModel by fragmentViewModel()
-    private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    private val dateFormatter = DateTimeFormatter.ofPattern(LOCAL_DATE_FORMAT)
 
     override fun invalidate() {
         withState(viewModel) { state ->

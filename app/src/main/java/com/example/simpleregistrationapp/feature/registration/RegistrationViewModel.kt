@@ -6,6 +6,7 @@ import com.example.simpleregistrationapp.di.mavericks.AssistedViewModelFactory
 import com.example.simpleregistrationapp.di.mavericks.hiltMavericksViewModelFactory
 import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse
 import com.example.simpleregistrationapp.feature.utils.LoadingState
+import com.example.simpleregistrationapp.utils.LOCAL_DATE_FORMAT
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -22,8 +23,7 @@ class RegistrationViewModel @AssistedInject constructor(
 ) :
     MavericksViewModel<RegistrationState>(initialState) {
 
-    private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-
+    private val dateFormatter = DateTimeFormatter.ofPattern(LOCAL_DATE_FORMAT)
     private val sideEffectsFlow = MutableSharedFlow<RegistrationSideEffects>()
     val sideEffectsFlowReceiver = sideEffectsFlow.asSharedFlow()
 
@@ -43,11 +43,13 @@ class RegistrationViewModel @AssistedInject constructor(
     }
 
     private fun registerUser() {
-        withState {
+        withState { state ->
             viewModelScope.launch {
-                registerNewUserUseCase.registerNewUser(it.toRequest()).collect {
-                    reduceRegistrationResult(it)
-                }
+                registerNewUserUseCase
+                    .registerNewUser(state.toRequest())
+                    .collect {
+                        reduceRegistrationResult(it)
+                    }
             }
         }
     }
