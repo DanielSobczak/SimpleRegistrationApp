@@ -1,6 +1,7 @@
 package com.example.simpleregistrationapp.feature.utils
 
 import com.airbnb.mvrx.Mavericks
+import com.airbnb.mvrx.MavericksViewModelConfigFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -17,7 +18,15 @@ class MavericksViewModelTestExtension(
 ) : BeforeAllCallback, BeforeEachCallback, AfterEachCallback {
 
     override fun beforeAll(context: ExtensionContext?) {
-        Mavericks.initialize(debugMode = false)
+        Mavericks.initialize(
+            debugMode = false,
+            viewModelConfigFactory = MavericksViewModelConfigFactory(
+                true,
+                contextOverride = dispatcher,
+                storeContextOverride = dispatcher,
+                subscriptionCoroutineContextOverride = dispatcher
+            )
+        )
     }
 
     override fun beforeEach(context: ExtensionContext?) {

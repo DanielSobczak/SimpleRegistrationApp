@@ -2,23 +2,19 @@ package com.example.simpleregistrationapp.feature.registration
 
 import com.example.simpleregistrationapp.domain.user.User
 import com.example.simpleregistrationapp.domain.user.UserStorage
+import com.example.simpleregistrationapp.feature.registration.RegistrationResult.InvalidFields
+import com.example.simpleregistrationapp.feature.registration.RegistrationResult.Loading
+import com.example.simpleregistrationapp.feature.registration.RegistrationResult.Success
+import com.example.simpleregistrationapp.feature.registration.RegistrationResult.UnhandledError
 import com.example.simpleregistrationapp.feature.registration.validation.UserValidator
-import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse
+import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse.PassedValidation
+import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse.ValidationFailed
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
-
-sealed class RegistrationResult {
-    object Loading : RegistrationResult()
-    object Success : RegistrationResult()
-    data class InvalidFields(val validationError: ValidationResponse.ValidationFailed) :
-        RegistrationResult()
-
-    data class UnhandledError(val exception: Exception) : RegistrationResult()
-}
 
 interface RegisterNewUserUseCase {
     fun registerNewUser(request: RegistrationRequest): Flow<RegistrationResult>
@@ -31,15 +27,11 @@ class RegisterNewUserUseCaseImpl @Inject constructor(
 ) : RegisterNewUserUseCase {
 
     override fun registerNewUser(request: RegistrationRequest): Flow<RegistrationResult> =
-        flow<RegistrationResult> {
-            emit(RegistrationResult.Loading)
+        flow {
+            emit(Loading)
             when (val validationResult = userValidator.validate(request)) {
-                ValidationResponse.PassedValidation -> insertIntoDatabase(request)
-                is ValidationResponse.ValidationFailed -> emit(
-                    RegistrationResult.InvalidFields(
-                        validationResult
-                    )
-                )
+                PassedValidation -> insertIntoDatabase(request)
+                is ValidationFailed -> emit(InvalidFields(validationResult))
             }
         }.flowOn(coroutineDispatcher)
 
@@ -49,11 +41,16 @@ class RegisterNewUserUseCaseImpl @Inject constructor(
         val user = User(request.name, request.email, request.dateOfBirth!!)
         try {
             userStorage.insert(user)
-            emit(RegistrationResult.Success)
+            emit(Success)
         } catch (exception: Exception) {
-            emit(RegistrationResult.UnhandledError(exception))
+            emit(UnhandledError(exception))
         }
     }
+}
 
-
+sealed class RegistrationResult {
+    object Loading : RegistrationResult()
+    object Success : RegistrationResult()
+    data class InvalidFields(val validationError: ValidationFailed) : RegistrationResult()
+    data class UnhandledError(val exception: Exception) : RegistrationResult()
 }
