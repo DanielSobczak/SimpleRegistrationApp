@@ -7,7 +7,7 @@ import com.example.simpleregistrationapp.storage.user.UserEntity
 import com.example.simpleregistrationapp.storage.user.UserEntityDao
 
 @Database(entities = [UserEntity::class], version = 1)
-@TypeConverters(DateConverter::class)
+@TypeConverters(LocalDateConverter::class)
 abstract class RoomDatabase : RoomDatabase() {
     abstract fun userDao(): UserEntityDao
 }

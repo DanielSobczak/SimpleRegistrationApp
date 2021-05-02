@@ -14,7 +14,9 @@ import javax.inject.Inject
 sealed class RegistrationResult {
     object Loading : RegistrationResult()
     object Success : RegistrationResult()
-    data class InvalidFields(val validationError: ValidationResponse.ValidationFailed) : RegistrationResult()
+    data class InvalidFields(val validationError: ValidationResponse.ValidationFailed) :
+        RegistrationResult()
+
     data class UnhandledError(val exception: Exception) : RegistrationResult()
 }
 

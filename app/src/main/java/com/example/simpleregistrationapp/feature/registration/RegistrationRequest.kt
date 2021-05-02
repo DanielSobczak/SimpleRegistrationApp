@@ -1,9 +1,9 @@
 package com.example.simpleregistrationapp.feature.registration
 
-import java.util.*
+import org.threeten.bp.LocalDate
 
 data class RegistrationRequest(
     val name: String = "",
     val email: String = "",
-    val dateOfBirth: Date? = null,
+    val dateOfBirth: LocalDate? = null,
 )

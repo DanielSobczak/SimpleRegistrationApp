@@ -4,12 +4,12 @@ import com.example.simpleregistrationapp.feature.registration.RegistrationReques
 import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.util.*
+import org.threeten.bp.LocalDate
 
 private val correctRequest = RegistrationRequest(
     name = "Foo",
     email = "foo@bar.com",
-    dateOfBirth = Date()
+    dateOfBirth = LocalDate.now()
 )
 
 class UserValidatorTest {

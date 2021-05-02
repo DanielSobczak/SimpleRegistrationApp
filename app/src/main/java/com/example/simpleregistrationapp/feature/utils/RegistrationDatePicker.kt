@@ -4,20 +4,17 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.util.AttributeSet
 import com.google.android.material.textfield.TextInputEditText
-import java.util.*
+import org.threeten.bp.LocalDate
 
 class RegistrationDatePicker : TextInputEditText {
 
-    private val myCalendar: Calendar = Calendar.getInstance()
     private var datePickerDialog: DatePickerDialog? = null
     private var dateSetListener: DatePickerDialog.OnDateSetListener =
         DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            myCalendar.set(Calendar.YEAR, year)
-            myCalendar.set(Calendar.MONTH, monthOfYear)
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            dateSelectedListener?.invoke(myCalendar.time)
+            val date = LocalDate.of(year, monthOfYear, dayOfMonth)
+            dateSelectedListener?.invoke(date)
         }
-    private var dateSelectedListener: ((Date) -> Unit)? = null
+    private var dateSelectedListener: ((LocalDate) -> Unit)? = null
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -27,7 +24,7 @@ class RegistrationDatePicker : TextInputEditText {
         defStyleAttr
     )
 
-    public fun setOnDatePickedListener(dateSelectedListener: (Date) -> Unit) {
+    fun setOnDatePickedListener(dateSelectedListener: (LocalDate) -> Unit) {
         this.dateSelectedListener = dateSelectedListener
     }
 
@@ -39,11 +36,14 @@ class RegistrationDatePicker : TextInputEditText {
     }
 
     private fun openDialogPicker() {
+        val now = LocalDate.now()
         datePickerDialog?.dismiss()
         datePickerDialog = DatePickerDialog(
-            this.context, dateSetListener, myCalendar[Calendar.YEAR],
-            myCalendar[Calendar.MONTH],
-            myCalendar[Calendar.DAY_OF_MONTH]
+            this.context,
+            dateSetListener,
+            now.year,
+            now.monthValue,
+            now.dayOfMonth
         )
         datePickerDialog?.show()
     }

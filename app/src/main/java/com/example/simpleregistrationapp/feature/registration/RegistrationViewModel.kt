@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
+import org.threeten.bp.LocalDate
+import org.threeten.bp.format.DateTimeFormatter
 
 class RegistrationViewModel @AssistedInject constructor(
     @Assisted initialState: RegistrationState,
@@ -22,18 +22,19 @@ class RegistrationViewModel @AssistedInject constructor(
 ) :
     MavericksViewModel<RegistrationState>(initialState) {
 
-    private val formatter = SimpleDateFormat("dd-MM-yyyy")
+    private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
     private val sideEffectsFlow = MutableSharedFlow<RegistrationSideEffects>()
     val sideEffectsFlowReceiver = sideEffectsFlow.asSharedFlow()
 
     fun updateName(name: String) = setState { copy(name = name, nameError = null) }
     fun updateEmail(email: String) = setState { copy(email = email, emailError = null) }
-    fun updateDate(date: Date) =
+    fun updateDate(date: LocalDate) =
         setState {
             copy(
                 dateOfBirth = date,
                 dateOfBirthError = null,
-                formattedDateOfBirth = formatter.format(date),
+                formattedDateOfBirth = date.format(dateFormatter),
             )
         }
 

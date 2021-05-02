@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9aa995afc9f28d95b412a1ce05d18dfc",
+    "identityHash": "d2b15edcd6986f274e593a8a6fad8e18",
     "entities": [
       {
         "tableName": "UserEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `dateOfBirth` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `dateOfBirth` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -29,7 +29,7 @@
           {
             "fieldPath": "dateOfBirth",
             "columnName": "dateOfBirth",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -46,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9aa995afc9f28d95b412a1ce05d18dfc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd2b15edcd6986f274e593a8a6fad8e18')"
     ]
   }
 }

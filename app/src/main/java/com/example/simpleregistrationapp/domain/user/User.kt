@@ -1,9 +1,9 @@
 package com.example.simpleregistrationapp.domain.user
 
-import java.util.*
+import org.threeten.bp.LocalDate
 
 data class User(
     val name: String,
     val email: String,
-    val dateOfBirth: Date,
+    val dateOfBirth: LocalDate,
 )
