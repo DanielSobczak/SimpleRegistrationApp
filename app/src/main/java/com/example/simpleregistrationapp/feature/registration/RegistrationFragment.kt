@@ -39,7 +39,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
         binding.registrationInputDate.setOnDatePickedListener {
             viewModel.updateDate(it)
         }
-        binding.registrationInputRegister.setOnClickListener {
+        binding.registrationBtnRegister.setOnClickListener {
             viewModel.onRegisterClicked()
         }
     }

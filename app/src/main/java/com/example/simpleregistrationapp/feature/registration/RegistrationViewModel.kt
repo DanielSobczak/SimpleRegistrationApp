@@ -45,12 +45,18 @@ class RegistrationViewModel @AssistedInject constructor(
     private fun registerUser() {
         withState {
             viewModelScope.launch {
-                registerNewUserUseCase.registerNewUser(it.mapToUser()).collect {
+                registerNewUserUseCase.registerNewUser(it.toRequest()).collect {
                     reduceRegistrationResult(it)
                 }
             }
         }
     }
+
+    private fun RegistrationState.toRequest() = RegistrationRequest(
+        this.name,
+        this.email,
+        this.dateOfBirth
+    )
 
     private fun reduceRegistrationResult(registrationResult: RegistrationResult) {
         when (registrationResult) {

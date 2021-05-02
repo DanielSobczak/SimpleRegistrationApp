@@ -21,7 +21,7 @@ sealed class RegistrationResult {
 }
 
 interface RegisterNewUserUseCase {
-    fun registerNewUser(user: User): Flow<RegistrationResult>
+    fun registerNewUser(request: RegistrationRequest): Flow<RegistrationResult>
 }
 
 class RegisterNewUserUseCaseImpl @Inject constructor(
@@ -30,28 +30,23 @@ class RegisterNewUserUseCaseImpl @Inject constructor(
     private val coroutineDispatcher: CoroutineDispatcher
 ) : RegisterNewUserUseCase {
 
-    override fun registerNewUser(user: User): Flow<RegistrationResult> = flow<RegistrationResult> {
-        emit(RegistrationResult.Loading)
-        val validationResult = userValidator.validate(
-            request = RegistrationRequest(
-                user.name,
-                user.email,
-                user.dateOfBirth
-            )
-        )
-        when (validationResult) {
-            ValidationResponse.PassedValidation -> insertIntoDatabase(user)
-            is ValidationResponse.ValidationFailed -> emit(
-                RegistrationResult.InvalidFields(
-                    validationResult
+    override fun registerNewUser(request: RegistrationRequest): Flow<RegistrationResult> =
+        flow<RegistrationResult> {
+            emit(RegistrationResult.Loading)
+            when (val validationResult = userValidator.validate(request)) {
+                ValidationResponse.PassedValidation -> insertIntoDatabase(request)
+                is ValidationResponse.ValidationFailed -> emit(
+                    RegistrationResult.InvalidFields(
+                        validationResult
+                    )
                 )
-            )
-        }
-    }.flowOn(coroutineDispatcher)
+            }
+        }.flowOn(coroutineDispatcher)
 
     private suspend fun FlowCollector<RegistrationResult>.insertIntoDatabase(
-        user: User
+        request: RegistrationRequest
     ) {
+        val user = User(request.name, request.email, request.dateOfBirth!!)
         try {
             userStorage.insert(user)
             emit(RegistrationResult.Success)
@@ -59,5 +54,6 @@ class RegisterNewUserUseCaseImpl @Inject constructor(
             emit(RegistrationResult.UnhandledError(exception))
         }
     }
+
 
 }
