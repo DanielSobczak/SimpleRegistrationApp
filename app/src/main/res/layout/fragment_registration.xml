@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:hint="Name"
+        android:hint="@string/registration_hint_name"
         app:layout_constraintTop_toBottomOf="@id/registration_welcome_message">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -44,7 +44,7 @@
         android:id="@+id/registration_input_email_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="@string/registration_hint_email"
         app:layout_constraintTop_toBottomOf="@id/registration_input_name_container">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -60,7 +60,7 @@
         android:id="@+id/registration_input_date_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Date of Birth"
+        android:hint="@string/registration_hint_date_of_birth"
         app:layout_constraintTop_toBottomOf="@id/registration_input_email_container">
 
         <com.example.simpleregistrationapp.feature.utils.RegistrationDatePicker
@@ -80,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Register"
+        android:text="@string/registration_btn_register"
         app:layout_constraintTop_toBottomOf="@id/registration_input_date_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

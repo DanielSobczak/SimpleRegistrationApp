@@ -37,7 +37,7 @@
             style="@style/confirmation_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User name" />
+            android:text="@string/confirmation_label_name" />
 
         <TextView
             android:id="@+id/confirmation_user_name"
@@ -49,7 +49,7 @@
             style="@style/confirmation_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User mail" />
+            android:text="@string/confirmation_label_mail" />
 
         <TextView
             android:id="@+id/confirmation_user_mail"
@@ -61,7 +61,7 @@
             style="@style/confirmation_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User mail" />
+            android:text="@string/confirmation_label_date_of_birth" />
 
         <TextView
             android:id="@+id/confirmation_user_date_of_birth"
