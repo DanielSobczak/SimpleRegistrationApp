@@ -14,6 +14,12 @@ import com.example.simpleregistrationapp.feature.utils.onTextChanged
 import com.example.simpleregistrationapp.feature.utils.updateTextIfDifferent
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import kotlinx.coroutines.flow.collect
+import org.threeten.bp.LocalDate
+import org.threeten.bp.ZoneId
+
+//As we are storing these values as long, the min possible value is 01/01/1900
+private val MAX_DOB_DATE = LocalDate.of(2019, 12, 31).toMillis()
+private val MIN_DOB_DATE = LocalDate.of(1900, 1, 1).toMillis()
 
 class RegistrationFragment : Fragment(R.layout.fragment_registration), MavericksView {
     private val binding by viewBinding(FragmentRegistrationBinding::bind)
@@ -36,11 +42,15 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
         binding.registrationInputEmail.onTextChanged {
             viewModel.updateEmail(it)
         }
-        binding.registrationInputDate.setOnDatePickedListener {
-            viewModel.updateDate(it)
-        }
         binding.registrationBtnRegister.setOnClickListener {
             viewModel.onRegisterClicked()
+        }
+        binding.registrationInputDate.apply {
+            setMinDateRange(MIN_DOB_DATE)
+            setMaxDateRange(MAX_DOB_DATE)
+            setOnDatePickedListener {
+                viewModel.updateDate(it)
+            }
         }
     }
 
@@ -56,5 +66,8 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
             }
         }
     }
+}
 
+fun LocalDate.toMillis(): Long {
+    return this.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 }

@@ -4,6 +4,7 @@ import com.example.simpleregistrationapp.domain.user.UserStorage
 import com.example.simpleregistrationapp.feature.registration.validation.UserValidator
 import com.example.simpleregistrationapp.feature.registration.validation.ValidationResponse
 import com.example.simpleregistrationapp.feature.utils.dummyUser
+import com.example.simpleregistrationapp.feature.utils.validRegistrationRequest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -33,7 +34,7 @@ class RegisterNewUserUseCaseImplTest {
     @Test
     fun registeringNewUserWithAllFieldsValid_willEmitSuccess() =
         testDispatcher.runBlockingTest {
-            val emits = sut.registerNewUser(dummyUser).toList()
+            val emits = sut.registerNewUser(validRegistrationRequest).toList()
             assertThat(emits).containsExactly(
                 RegistrationResult.Loading,
                 RegistrationResult.Success
@@ -45,7 +46,7 @@ class RegisterNewUserUseCaseImplTest {
         testDispatcher.runBlockingTest {
             val databaseException = RuntimeException()
             given(mockUserStorage.insert(dummyUser)).willThrow(databaseException)
-            val emits = sut.registerNewUser(dummyUser).toList()
+            val emits = sut.registerNewUser(validRegistrationRequest).toList()
             assertThat(emits).containsExactly(
                 RegistrationResult.Loading,
                 RegistrationResult.UnhandledError(databaseException)
@@ -55,7 +56,7 @@ class RegisterNewUserUseCaseImplTest {
     @Test
     fun whenRegisteringNewUserWithMissingMail_willEmitValidationError() =
         testDispatcher.runBlockingTest {
-            val emits = sut.registerNewUser(dummyUser.copy(email = "")).toList()
+            val emits = sut.registerNewUser(validRegistrationRequest.copy(email = "")).toList()
             assertThat(emits).containsExactly(
                 RegistrationResult.Loading,
                 RegistrationResult.InvalidFields(

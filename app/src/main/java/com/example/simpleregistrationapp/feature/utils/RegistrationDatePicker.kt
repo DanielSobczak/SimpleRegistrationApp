@@ -5,8 +5,11 @@ import android.content.Context
 import android.util.AttributeSet
 import com.google.android.material.textfield.TextInputEditText
 import org.threeten.bp.LocalDate
+import org.threeten.bp.ZoneId
 
 class RegistrationDatePicker : TextInputEditText {
+    private var minDate: Long? = null
+    private var maxDate: Long? = null
     private var datePickerDialog: DatePickerDialog? = null
     private var registrationSelectedListener: ((LocalDate) -> Unit)? = null
     private var dialogDateSetListener: DatePickerDialog.OnDateSetListener =
@@ -23,6 +26,14 @@ class RegistrationDatePicker : TextInputEditText {
         attrs,
         defStyleAttr
     )
+
+    fun setMinDateRange(value: Long) {
+        minDate = value
+    }
+
+    fun setMaxDateRange(value: Long) {
+        maxDate = value
+    }
 
     fun setOnDatePickedListener(dateSelectedListener: (LocalDate) -> Unit) {
         this.registrationSelectedListener = dateSelectedListener
@@ -45,7 +56,11 @@ class RegistrationDatePicker : TextInputEditText {
             now.monthValue,
             now.dayOfMonth
         )
-        datePickerDialog?.show()
+        datePickerDialog?.apply {
+            minDate?.let { datePicker.minDate = it }
+            maxDate?.let { datePicker.maxDate = it }
+            show()
+        }
     }
 
     override fun onDetachedFromWindow() {
