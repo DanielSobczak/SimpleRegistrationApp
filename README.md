@@ -15,7 +15,7 @@ as well as UI test written with the help of [kakao](https://github.com/agoda-com
 >./gradlew connectedAndroidTest
 
 ## Static code analysis
-For static code analysis run [detekt] (https://github.com/detekt/detekt)
+For static code analysis run [detekt](https://github.com/detekt/detekt)
 >./gradlew detekt
 
 and default lint configuration
