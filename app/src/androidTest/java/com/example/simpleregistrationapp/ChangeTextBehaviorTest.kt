@@ -1,15 +1,14 @@
 package com.example.simpleregistrationapp
 
-import android.widget.DatePicker
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.PickerActions
-import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import org.hamcrest.Matchers
+import com.agoda.kakao.edit.KEditText
+import com.agoda.kakao.picker.date.KDatePickerDialog
+import com.agoda.kakao.screen.Screen
+import com.agoda.kakao.screen.Screen.Companion.onScreen
+import com.agoda.kakao.text.KButton
+import com.agoda.kakao.text.KTextView
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,31 +23,42 @@ class ChangeTextBehaviorTest {
 
     @Test
     fun registerNewUserWithValidInputData_willShowConfirmationScreen() {
-        val name = "Foo"
-        val email = "foo@bar.com"
-        onView(withId(R.id.registration_input_name))
-            .perform(typeText(name))
-        onView(withId(R.id.registration_input_email))
-            .perform(typeText(email), closeSoftKeyboard())
-        onView(withId(R.id.registration_input_date))
-            .perform(click())
+        val nameInput = "Foo"
+        val emailInput = "foo@bar.com"
 
-        onView(withClassName(Matchers.equalTo(DatePicker::class.java.name))).perform(
-            PickerActions.setDate(
-                2017,
-                6,
-                30
-            )
-        )
-        onView(withText(android.R.string.ok)).perform(click())
+        onScreen<RegistrationScreen> {
+            name.typeText(nameInput)
+            email.typeText(emailInput)
+            closeSoftKeyboard()
+            dateOfBirth.click()
+            calendar {
+                datePicker.setDate(2017, 6, 30)
+                okButton.click()
+            }
+            register.click()
+        }
 
-        onView(withId(R.id.registration_btn_register)).perform(click())
-
-        onView(withId(R.id.confirmation_user_name))
-            .check(matches(withText(name)))
-        onView(withId(R.id.confirmation_user_mail))
-            .check(matches(withText(email)))
-        onView(withId(R.id.confirmation_user_date_of_birth))
-            .check(matches(withText("30/06/2017")))
+        onScreen<ConfirmationScreen> {
+            name.hasText(nameInput)
+            email.hasText(emailInput)
+            dateOfBirth.hasText("30/06/2017")
+        }
     }
 }
+
+class RegistrationScreen : Screen<RegistrationScreen>() {
+    val name = KEditText { withId(R.id.registration_input_name) }
+    val email = KEditText { withId(R.id.registration_input_email) }
+    val dateOfBirth = KButton { withId(R.id.registration_input_date) }
+    val calendar = KDatePickerDialog()
+    val register = KButton { withId(R.id.registration_btn_register) }
+}
+
+class ConfirmationScreen : Screen<ConfirmationScreen>() {
+    val name = KTextView { withId(R.id.confirmation_user_name) }
+    val email = KTextView { withId(R.id.confirmation_user_mail) }
+    val dateOfBirth = KTextView { withId(R.id.confirmation_user_date_of_birth) }
+}
+
+
+
