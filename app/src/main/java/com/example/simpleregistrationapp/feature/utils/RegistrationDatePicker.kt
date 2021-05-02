@@ -7,14 +7,13 @@ import com.google.android.material.textfield.TextInputEditText
 import org.threeten.bp.LocalDate
 
 class RegistrationDatePicker : TextInputEditText {
-
     private var datePickerDialog: DatePickerDialog? = null
-    private var dateSetListener: DatePickerDialog.OnDateSetListener =
+    private var registrationSelectedListener: ((LocalDate) -> Unit)? = null
+    private var dialogDateSetListener: DatePickerDialog.OnDateSetListener =
         DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             val date = LocalDate.of(year, monthOfYear, dayOfMonth)
-            dateSelectedListener?.invoke(date)
+            registrationSelectedListener?.invoke(date)
         }
-    private var dateSelectedListener: ((LocalDate) -> Unit)? = null
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -25,7 +24,7 @@ class RegistrationDatePicker : TextInputEditText {
     )
 
     fun setOnDatePickedListener(dateSelectedListener: (LocalDate) -> Unit) {
-        this.dateSelectedListener = dateSelectedListener
+        this.registrationSelectedListener = dateSelectedListener
     }
 
     override fun onAttachedToWindow() {
@@ -40,7 +39,7 @@ class RegistrationDatePicker : TextInputEditText {
         datePickerDialog?.dismiss()
         datePickerDialog = DatePickerDialog(
             this.context,
-            dateSetListener,
+            dialogDateSetListener,
             now.year,
             now.monthValue,
             now.dayOfMonth
