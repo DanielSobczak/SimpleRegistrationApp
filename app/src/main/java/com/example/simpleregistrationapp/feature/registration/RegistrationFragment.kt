@@ -2,6 +2,7 @@ package com.example.simpleregistrationapp.feature.registration
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,7 +30,19 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration), Mavericks
         super.onCreate(savedInstanceState)
         lifecycleScope.launchWhenStarted {
             viewModel.sideEffectsFlowReceiver.collect {
+                handleSideEffect(it)
+            }
+        }
+    }
+
+    private fun handleSideEffect(sideEffect: RegistrationSideEffects) {
+        when (sideEffect) {
+            RegistrationSideEffects.OpenConfirmationScreen -> {
                 findNavController().navigate(R.id.action_registrationFragment_to_confirmationFragment)
+            }
+            RegistrationSideEffects.ShowGenericError -> {
+                Toast.makeText(requireContext(), R.string.generic_error, Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }

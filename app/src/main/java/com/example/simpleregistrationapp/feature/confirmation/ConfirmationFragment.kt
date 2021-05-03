@@ -32,7 +32,7 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation), Mavericks
             confirmationLoader.visibility = View.GONE
             confirmationContent.visibility = View.GONE
             confirmationError.visibility = View.VISIBLE
-            confirmationError.text = getString(R.string.confirmation_generic_error)
+            confirmationError.text = getString(R.string.generic_error)
         }
     }
 

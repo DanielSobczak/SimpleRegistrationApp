@@ -68,12 +68,25 @@ class RegistrationViewModel @AssistedInject constructor(
                 setState { copy(loadingState = LoadingState.Ready) }
                 navigateToConfirmationScreen()
             }
-            is RegistrationResult.UnhandledError -> setState {
-                copy(loadingState = LoadingState.Error)
+            is RegistrationResult.UnhandledError -> {
+                setState { copy(loadingState = LoadingState.Error) }
+                showGenericError()
             }
             is RegistrationResult.InvalidFields -> setState {
                 stateForValidationError(registrationResult.validationError)
             }
+        }
+    }
+
+    private fun navigateToConfirmationScreen() {
+        viewModelScope.launch {
+            sideEffectsFlow.emit(RegistrationSideEffects.OpenConfirmationScreen)
+        }
+    }
+
+    private fun showGenericError() {
+        viewModelScope.launch {
+            sideEffectsFlow.emit(RegistrationSideEffects.ShowGenericError)
         }
     }
 
@@ -85,12 +98,6 @@ class RegistrationViewModel @AssistedInject constructor(
         dateOfBirthError = validationError.dateOfBirthError?.asDateError(),
         loadingState = LoadingState.Error
     )
-
-    private fun navigateToConfirmationScreen() {
-        viewModelScope.launch {
-            sideEffectsFlow.emit(RegistrationSideEffects.OpenConfirmationScreen)
-        }
-    }
 
     private fun ValidationResponse.ValidationError.asNameError(): String {
         return when (this) {
