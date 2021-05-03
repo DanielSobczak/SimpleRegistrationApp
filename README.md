@@ -30,4 +30,5 @@ App is written in MVI architecture based on a [mavericks library](https://github
 * extract versions & clean up gradle dependencies
 * add proper formatting rules
 * go through lint warning
+* rotation while working is not "supported" by the UI
 
