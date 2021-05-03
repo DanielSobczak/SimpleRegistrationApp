@@ -21,8 +21,7 @@ class RegistrationViewModel @AssistedInject constructor(
     @Assisted initialState: RegistrationState,
     private val registerNewUserUseCase: RegisterNewUserUseCase,
     private val registrationLiterals: RegistrationLiterals
-) :
-    MavericksViewModel<RegistrationState>(initialState) {
+) : MavericksViewModel<RegistrationState>(initialState) {
 
     private val dateFormatter = DateTimeFormatter.ofPattern(LOCAL_DATE_FORMAT)
     private val sideEffectsFlow = MutableSharedFlow<RegistrationSideEffects>()
@@ -30,14 +29,13 @@ class RegistrationViewModel @AssistedInject constructor(
 
     fun updateName(name: String) = setState { copy(name = name, nameError = null) }
     fun updateEmail(email: String) = setState { copy(email = email, emailError = null) }
-    fun updateDate(date: LocalDate) =
-        setState {
-            copy(
-                dateOfBirth = date,
-                dateOfBirthError = null,
-                formattedDateOfBirth = date.format(dateFormatter),
-            )
-        }
+    fun updateDate(date: LocalDate) = setState {
+        copy(
+            dateOfBirth = date,
+            dateOfBirthError = null,
+            formattedDateOfBirth = date.format(dateFormatter),
+        )
+    }
 
     fun onRegisterClicked() {
         registerUser()

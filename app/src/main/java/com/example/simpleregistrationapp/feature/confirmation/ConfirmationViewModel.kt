@@ -14,8 +14,7 @@ import kotlinx.coroutines.launch
 class ConfirmationViewModel @AssistedInject constructor(
     @Assisted initialState: ConfirmationState,
     private val getUserUseCase: GetUserUseCase,
-) :
-    MavericksViewModel<ConfirmationState>(initialState) {
+) : MavericksViewModel<ConfirmationState>(initialState) {
 
     init {
         viewModelScope.launch {

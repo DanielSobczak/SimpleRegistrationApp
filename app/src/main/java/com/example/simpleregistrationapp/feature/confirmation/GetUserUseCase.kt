@@ -8,13 +8,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-sealed class FetchUserResult {
-    object Loading : FetchUserResult()
-    object NoUserFound : FetchUserResult()
-    data class Success(val user: User) : FetchUserResult()
-    data class UnhandledError(val exception: Exception) : FetchUserResult()
-}
-
 interface GetUserUseCase {
     fun getRegisteredUser(): Flow<FetchUserResult>
 }
@@ -33,5 +26,11 @@ class GetUserUseCaseImpl @Inject constructor(
             emit(FetchUserResult.NoUserFound)
         }
     }.flowOn(coroutineDispatcher)
+}
 
+sealed class FetchUserResult {
+    object Loading : FetchUserResult()
+    object NoUserFound : FetchUserResult()
+    data class Success(val user: User) : FetchUserResult()
+    data class UnhandledError(val exception: Exception) : FetchUserResult()
 }

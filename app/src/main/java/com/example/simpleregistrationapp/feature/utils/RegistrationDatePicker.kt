@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.AttributeSet
 import com.google.android.material.textfield.TextInputEditText
 import org.threeten.bp.LocalDate
-import org.threeten.bp.ZoneId
 
 class RegistrationDatePicker : TextInputEditText {
     private var minDate: Long? = null
