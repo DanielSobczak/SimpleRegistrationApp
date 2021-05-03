@@ -15,4 +15,5 @@
     <string name="validator_invalid_email">Email format invalid</string>
     <string name="validator_empty_date_of_birth">Missing date of birth</string>
     <string name="validator_invalid_date_of_birth">Date format is not valid</string>
+    <string name="registration_welcome_message">Please register to our app!</string>
 </resources>
