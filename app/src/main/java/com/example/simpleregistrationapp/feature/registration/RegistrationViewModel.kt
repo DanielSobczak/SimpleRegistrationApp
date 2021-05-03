@@ -19,7 +19,8 @@ import org.threeten.bp.format.DateTimeFormatter
 
 class RegistrationViewModel @AssistedInject constructor(
     @Assisted initialState: RegistrationState,
-    private val registerNewUserUseCase: RegisterNewUserUseCase
+    private val registerNewUserUseCase: RegisterNewUserUseCase,
+    private val registrationLiterals: RegistrationLiterals
 ) :
     MavericksViewModel<RegistrationState>(initialState) {
 
@@ -93,6 +94,27 @@ class RegistrationViewModel @AssistedInject constructor(
         }
     }
 
+    private fun ValidationResponse.ValidationError.asNameError(): String {
+        return when (this) {
+            ValidationResponse.ValidationError.EmptyField -> registrationLiterals.emptyNameError
+            ValidationResponse.ValidationError.InvalidFormat -> registrationLiterals.invalidNameError
+        }
+    }
+
+    private fun ValidationResponse.ValidationError.asEmailError(): String {
+        return when (this) {
+            ValidationResponse.ValidationError.EmptyField -> registrationLiterals.emptyEmailError
+            ValidationResponse.ValidationError.InvalidFormat -> registrationLiterals.invalidEmailError
+        }
+    }
+
+    private fun ValidationResponse.ValidationError.asDateError(): String {
+        return when (this) {
+            ValidationResponse.ValidationError.EmptyField -> registrationLiterals.emptyDateError
+            ValidationResponse.ValidationError.InvalidFormat -> registrationLiterals.invalidDateError
+        }
+    }
+
     @AssistedFactory
     interface Factory : AssistedViewModelFactory<RegistrationViewModel, RegistrationState> {
         override fun create(state: RegistrationState): RegistrationViewModel
@@ -100,27 +122,7 @@ class RegistrationViewModel @AssistedInject constructor(
 
     companion object :
         MavericksViewModelFactory<RegistrationViewModel, RegistrationState> by hiltMavericksViewModelFactory()
-}
 
-private fun ValidationResponse.ValidationError.asNameError(): String {
-    return when (this) {
-        ValidationResponse.ValidationError.EmptyField -> "Missing username"
-        ValidationResponse.ValidationError.InvalidFormat -> "Username format invalid"
-    }
-}
-
-private fun ValidationResponse.ValidationError.asEmailError(): String {
-    return when (this) {
-        ValidationResponse.ValidationError.EmptyField -> "Missing email"
-        ValidationResponse.ValidationError.InvalidFormat -> "Email format invalid"
-    }
-}
-
-private fun ValidationResponse.ValidationError.asDateError(): String {
-    return when (this) {
-        ValidationResponse.ValidationError.EmptyField -> "Missing date of birth"
-        ValidationResponse.ValidationError.InvalidFormat -> "Date format is not valid"
-    }
 }
 
 
