@@ -25,10 +25,10 @@ and default lint configuration
 App is written in MVI architecture based on a [mavericks library](https://github.com/airbnb/mavericks).
 
 ## TODO list
-* improve loading/error feedback on UI
+* improve loading/error feedback on registration UI
 * handle back navigation from Confirmation screen
 * extract versions & clean up gradle dependencies
 * add proper formatting rules
-* go through lint warning
+* go through lint warnings
 * rotation while working is not "supported" by the UI
 
