@@ -204,6 +204,7 @@ fabric.properties
 
 # Package Files #
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 *.nar
 *.zip
 *.tar.gz
